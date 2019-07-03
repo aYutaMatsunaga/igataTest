@@ -1,0 +1,41 @@
+.list {
+  display: flex;
+  align-items: center;
+  margin: 7px 0;
+  padding-left: 15px;
+  font-size: 2.6rem;
+  border: solid #c3c3c3;
+  border-width: 1px 0 1px 1px;
+  border-radius: 10px 0 0 10px;
+  box-shadow: 0 0 3px 1px #e3e3e3;
+
+  &:hover {
+    box-shadow: 0 0 10px 1px #e3e3e3;
+  }
+}
+
+.checkbox {
+  transform: scale(1.5);
+}
+
+.todoText {
+  margin: 0;
+  padding: 0 0 0 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.deleteButton {
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  color: white;
+  font-size: 1.8rem;
+  background: rgb(202, 60, 60);
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
