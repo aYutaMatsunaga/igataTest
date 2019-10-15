@@ -23,6 +23,7 @@ import { RootState } from '@/app/models'
 import { Todo } from '@/app/models/Todo'
 import words from '@/assets/strings'
 import style from '@/app/containers/TodoApp/style.scss'
+import { Scroll } from '@/app/components/Scroll'
 
 interface StateProps {
   readonly todos: Todo[]
@@ -129,6 +130,7 @@ const TodoApp: FC<TodoAppProps> = (props: TodoAppProps) => {
           <TodoItem key={todo.id} todo={todo} handleCheckBoxClick={handleCheckBoxClick} handleDeleteClick={handleDeleteClick} />
         ))}
       </ListWrapper>
+      <Scroll />
       <Footer />
     </div>
   )
