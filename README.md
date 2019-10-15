@@ -11,6 +11,12 @@
 
 `igata(鋳型)` is my boilerplate for Web Frontend. It should be maintained by me and my lovely dependabot as much as possible. By the way, `鋳型` is a Japanese word and it means a boilerplate or casting mold.
 
+```exs
+'boilerplate'
+|> toJapanese // 鋳型
+|> toAlphabet // igata 🎉
+```
+
 ## DEMO
 
 - [Web Application](https://igata-diescake.netlify.com)
@@ -18,7 +24,22 @@
 
 ## How to use
 
-Recommend to use as a template. Please click above ["Use this template"](https://help.github.com/en/articles/creating-a-repository-from-a-template) button to start. 😊
+Recommend to use as a template. Please click above ["Use this template"](https://help.github.com/en/articles/creating-a-repository-from-a-template) button to start. Though the template function provided by GitHub is really comfort and useful, please note that your new repository is always created from HEAD of `master`.
+
+About template for more information, see [Creating a repository from a template](https://help.github.com/articles/creating-a-repository-from-a-template)
+
+## How to build and launch server
+
+```sh
+$ yarn # npm install
+$ yarn start # npm start
+```
+
+## Requirements
+
+- Node.js v8.xx
+  - Probably the newer version is also fine.
+- Recommend to use version manager [asdf](https://github.com/asdf-vm/asdf).
 
 ## Technology stacks
 
@@ -26,27 +47,32 @@ Recommend to use as a template. Please click above ["Use this template"](https:/
 
 - [TypeScript](https://www.typescriptlang.org/)
 
-### View frameworks
+### Single page applications
 
 - [React](https://reactjs.org/) + [Redux](https://redux.js.org/)
 - [react-router](https://reacttraining.com/react-router/) + [connected-react-router](https://github.com/supasate/connected-react-router)
 - [redux-saga](https://github.com/redux-saga/redux-saga)
 
+### Styles
+
+- [Sass](https://sass-lang.com/) as CSS Modules
+- [clsx](https://github.com/lukeed/clsx)
+- [Font Awesome](https://fontawesome.com/)
+- [Reboot.css](https://raw.githubusercontent.com/twbs/bootstrap/v4-dev/dist/css/bootstrap-reboot.css)
+
 ### Utilities
 
 - [axios](https://github.com/axios/axios)
 - [dayjs](https://github.com/iamkun/dayjs)
+- [Formik](https://jaredpalmer.com/formik/)
 
-### Styles
-
-- [Sass](https://sass-lang.com/) as CSS Modules
-- [Font Awesome](https://fontawesome.com/)
-- [Reboot.css](https://raw.githubusercontent.com/twbs/bootstrap/v4-dev/dist/css/bootstrap-reboot.css)
-
-### Tests
+### Static code analysis and formatters
 
 - [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)
 - [stylelint](https://stylelint.io/)
+
+### Tests
+
 - [Jest](https://jestjs.io/)
 - [StoryBook](https://storybook.js.org/)
 
@@ -61,12 +87,10 @@ Recommend to use as a template. Please click above ["Use this template"](https:/
 - [CircleCI](https://circleci.com/)
 - [netlify](https://www.netlify.com)
 - [Dependabot](https://dependabot.com/)
+
+### Editors
+
 - [Visual Studio Code](https://code.visualstudio.com/) (Recommended)
-
-## Requirement
-
-- Node.js v8.xx
-  - Possibly the latest version is also fine.
 
 ## Npm scripts
 

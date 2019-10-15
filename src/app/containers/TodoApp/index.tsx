@@ -1,18 +1,9 @@
-import React, { FC, useState, useEffect, ChangeEvent, KeyboardEvent } from 'react'
+import React, { FC, useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from 'react'
 import { connect } from 'react-redux'
-import { faListAlt } from '@fortawesome/free-solid-svg-icons'
+import { faListAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
-import { logout, DispatchLogout } from '@/app/actions/login'
-import {
-  addTodo,
-  DispatchAddTodo,
-  updateTodo,
-  DispatchUpdateTodo,
-  deleteTodo,
-  DispatchDeleteTodo,
-  fetchTodos,
-  DispatchFetchTodos,
-} from '@/app/actions/todo'
+import { logout, LoginDispatcher } from '@/app/actions/login'
+import { addTodo, updateTodo, deleteTodo, fetchTodos, TodoDispatcher } from '@/app/actions/todo'
 import { Header } from '@/app/components/Header'
 import { TodoItem } from '@/app/components/TodoItem'
 import { ListWrapper } from '@/app/components/ListWrapper'
@@ -23,7 +14,6 @@ import { RootState } from '@/app/models'
 import { Todo } from '@/app/models/Todo'
 import words from '@/assets/strings'
 import style from '@/app/containers/TodoApp/style.scss'
-import { Scroll } from '@/app/components/Scroll'
 
 interface StateProps {
   readonly todos: Todo[]
@@ -32,11 +22,11 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  readonly addTodo: DispatchAddTodo
-  readonly updateTodo: DispatchUpdateTodo
-  readonly deleteTodo: DispatchDeleteTodo
-  readonly fetchTodos: DispatchFetchTodos
-  readonly logout: DispatchLogout
+  readonly addTodo: TodoDispatcher['addTodo']
+  readonly updateTodo: TodoDispatcher['updateTodo']
+  readonly deleteTodo: TodoDispatcher['deleteTodo']
+  readonly fetchTodos: TodoDispatcher['fetchTodos']
+  readonly logout: LoginDispatcher['logout']
 }
 
 type TodoAppProps = StateProps & DispatchProps
@@ -58,6 +48,7 @@ const mapDispatchToProps = {
 const TodoApp: FC<TodoAppProps> = (props: TodoAppProps) => {
   const [text, setText] = useState<string>('')
   const [modalHidden, setModalHidden] = useState<boolean>(true)
+  const inputElem = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     props.fetchTodos()
@@ -96,6 +87,12 @@ const TodoApp: FC<TodoAppProps> = (props: TodoAppProps) => {
     setModalHidden(true)
   }
 
+  const handleModalLoad = () => {
+    if (inputElem.current) {
+      inputElem.current.focus()
+    }
+  }
+
   return (
     <div className={style.container}>
       <Header title={words.todoApp.title} userId={props.userId} icon={faListAlt} />
@@ -108,11 +105,12 @@ const TodoApp: FC<TodoAppProps> = (props: TodoAppProps) => {
           {words.todoApp.logout}
         </button>
       </div>
-      <button type="button" onClick={modalOpen}>
+      <button type="button" className={style.addButton} onClick={modalOpen}>
         {words.todoApp.newTodo}
       </button>
-      <Modal hidden={modalHidden} name={words.todoApp.newTodo} close={modalClose}>
+      <Modal hidden={modalHidden} onLoad={handleModalLoad} icon={faPlusCircle} name={words.todoApp.newTodo} close={modalClose}>
         <input
+          ref={inputElem}
           className={style.inputTodo}
           type="text"
           onChange={handleInputChange}
@@ -120,7 +118,8 @@ const TodoApp: FC<TodoAppProps> = (props: TodoAppProps) => {
           placeholder={words.todoApp.placeholder}
           value={text}
         />
-        <button type="button" className={style.addButton} disabled={props.fetching} onClick={handleAddTodoClick}>
+        <br />
+        <button type="button" className={style.postButton} disabled={!text || props.fetching} onClick={handleAddTodoClick}>
           {words.todoApp.addTodo}
         </button>
       </Modal>
@@ -130,7 +129,6 @@ const TodoApp: FC<TodoAppProps> = (props: TodoAppProps) => {
           <TodoItem key={todo.id} todo={todo} handleCheckBoxClick={handleCheckBoxClick} handleDeleteClick={handleDeleteClick} />
         ))}
       </ListWrapper>
-      <Scroll />
       <Footer />
     </div>
   )

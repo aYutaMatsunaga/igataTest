@@ -1,21 +1,23 @@
-import React, { useState, useEffect, FC } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import React, { useEffect, FC } from 'react'
+import { RouteComponentProps } from 'react-router'
 import { connect } from 'react-redux'
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Header } from '@/app/components/Header'
-import { login, DispatchLogin } from '@/app/actions/login'
+import { LoginForm } from '@/app/components/LoginForm'
+import { Footer } from '@/app/components/Footer'
+import { login, LoginDispatcher } from '@/app/actions/login'
 import { RootState } from '@/app/models'
+import { paths } from '@/app/common/paths'
 import words from '@/assets/strings'
 import style from '@/app/containers/Login/style.scss'
-import { Footer } from '@/app/components/Footer'
 
 interface StateProps {
   readonly token: string
 }
 
 interface DispatchProps {
-  readonly login: DispatchLogin
+  readonly login: LoginDispatcher['login']
 }
 
 type LoginProps = StateProps & DispatchProps & RouteComponentProps
@@ -29,72 +31,22 @@ const mapDispatchToProps: DispatchProps = {
 }
 
 const Login: FC<LoginProps> = (props: LoginProps) => {
-  const [loginId, setLoginId] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-
   useEffect(() => {
     if (props.token) {
-      props.history.push('/')
+      props.history.push(paths.root)
     }
   }, [props.token])
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    props.login(loginId, password)
-  }
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter') {
-      return
-    }
-    props.login(loginId, password)
-  }
-
-  const handleLoginIdChange = (e: React.ChangeEvent<HTMLInputElement>) => setLoginId(e.target.value)
-  const handleLoginPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
-
-  const { login } = words
-
   return (
     <div className={style.container}>
-      <Header title={login.title} userId="" icon={faSignInAlt} />
-      <form onSubmit={handleSubmit}>
-        <label className={style.label}>{login.id}</label>
-        <div>
-          <input
-            className={style.input}
-            type="text"
-            autoComplete="username"
-            onChange={handleLoginIdChange}
-            onKeyPress={handleKeyPress}
-            placeholder={login.idPlaceholder}
-            value={loginId}
-          />
-        </div>
-        <label className={style.label}>{login.password}</label>
-        <div>
-          <input
-            className={style.input}
-            type="password"
-            autoComplete="current-password"
-            onChange={handleLoginPasswordChange}
-            onKeyPress={handleKeyPress}
-            placeholder={login.passwordPlaceholder}
-            value={password}
-          />
-        </div>
-        <button type="submit" className={style.loginButton}>
-          {login.login}
-        </button>
-      </form>
+      <Header title={words.login.title} icon={faSignInAlt} />
+      <LoginForm login={props.login} />
       <Footer />
     </div>
   )
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Login)
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login)
